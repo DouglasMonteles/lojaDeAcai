@@ -21,15 +21,25 @@ public class GerenciarMenu extends HttpServlet {
             out.println("<title>Servlet GerenciarMenu</title>");            
             out.println("</head>");
             out.println("<body>");
-            
+            response.setCharacterEncoding("UTF-8");
             try {
                 String tipo = request.getParameter("tipo");
+                int id = Integer.parseInt(request.getParameter("id"));
                 String nome = request.getParameter("nome");
                 String link = request.getParameter("link");
                 String icone = request.getParameter("icone");
                 Menu m = new Menu();
                 MenuDAO mDAO = new MenuDAO();
                 
+                if("excluir".equals(tipo)) {
+                    if(mDAO.excluir(id) == 1) {
+                        out.print("<script>alert('Menu excluido!'); location.href='menu.jsp'</script>");
+                    }
+                } else {
+                    out.print("<script>alert('Erro ao excluir o menu'); location.href='excluir_menu.jsp?id='"+id+"</script>");
+                }
+                
+                m.setId(id);
                 m.setNome(nome);
                 m.setLink(link);
                 m.setIcone(icone);
@@ -37,9 +47,25 @@ public class GerenciarMenu extends HttpServlet {
                 switch(tipo) {
                     case "inserir":
                         if(mDAO.inserir(m) == 1){
-                            out.print("<script>alert('Menu inserido!'); location.href='index.jsp'</script>");
+                            out.print("<script>alert('Menu inserido!'); location.href='menu.jsp'</script>");
                         } else {
                             out.print("<script>alert('Erro ao cadastrar menu')</script>");
+                        }
+                    ;break;
+                    case "alterar":
+                         if(mDAO.alterar(m) == 1){
+                            out.print("<script>alert('Menu alterado!'); location.href='menu.jsp'</script>");
+                        } else {
+                            out.print("<script>alert('Erro ao alterar menu! Tente novamente'); "
+                                    + "location.href='alterar_menu.jsp?id="+id+"'</script>");                        
+                         }
+                    ;break;
+                    case "excluir":
+                         if(mDAO.excluir(id) == 1){
+                            m.setId(id);
+                            out.print("<script>alert('Menu excluir!'); location.href='menu.jsp'</script>");
+                        } else {
+                            out.print("<script>alert('Erro ao excluir menu'); location.href = 'menu.jsp'</script>");
                         }
                     ;break;
                 }

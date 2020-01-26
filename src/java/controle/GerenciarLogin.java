@@ -6,11 +6,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Perfil;
+import javax.servlet.http.HttpSession;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
 
-public class GerenciarUsuario extends HttpServlet {
+public class GerenciarLogin extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,60 +19,33 @@ public class GerenciarUsuario extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GerenciarUsuario</title>");            
+            out.println("<title>Servlet GerenciarLogin</title>");            
             out.println("</head>");
             out.println("<body>");
             
             try {
-                Usuario u = new Usuario();
-                Perfil p = new Perfil();
-                UsuarioDAO uDAO = new UsuarioDAO();
-                
-                String tipo = request.getParameter("tipo");
-                int id = Integer.parseInt(request.getParameter("id"));
-                
-                if ("excluir".equals(tipo)) {
-                    if (uDAO.excluir(id) == 1) {
-                            out.print("<script>alert('Usuário excluido!'); location.href='usuario.jsp'</script>");
-                    } else {
-                        out.print("<script>alert('Erro ao  excluir usuário! Tente novamente'); location.href='alterar_usuario.jsp'</script>");
-                    }
-                }
-                
-                int id_perfil = Integer.parseInt(request.getParameter("id_perfil"));
-                String nome = request.getParameter("nome");
+                String tipo = request.getParameter("type");
                 String login = request.getParameter("login");
-                String senha = request.getParameter("senha");
-                
-                u.setNome(nome);
-                u.setLogin(login);
-                u.setSenha(senha);
-                p.setId(id_perfil);
-                u.setPerfil(p);
+                String psw = request.getParameter("password");
+                Usuario u;
+                UsuarioDAO uDAO = new UsuarioDAO();
+                HttpSession session = request.getSession();
                 
                 switch(tipo) {
-                    case "inserir":
+                    case "login":
+                        u = uDAO.login(login, psw);
                         
-                        if (uDAO.inserir(u) == 1) {
-                            out.print("<script>alert('Usuário inserido!'); location.href='usuario.jsp'</script>");
+                        if ( u.getId() > 0 ) {
+                            session.setAttribute("user_session", u);
+                            response.sendRedirect("administracao.jsp");
                         } else {
-                            out.print("<script>alert('Erro ao  inserir usuário! Tente novamente'); location.href='inserir_usuario.jsp'</script>");
+                            out.print("<script>"
+                                    + "alert('Usuário ou senha incorretos! Tente novamente');"
+                                    + "location.href='index.jsp'"
+                                    + "</script>");
                         }
-                        
-                        break;
-                    
-                    case "alterar":
-                        u.setId(id);
-                        
-                        if (uDAO.alterar(u) == 1) {
-                            out.print("<script>alert('Usuário alterado!'); location.href='usuario.jsp'</script>");
-                        } else {
-                            out.print("<script>alert('Erro ao  alterar usuário! Tente novamente'); location.href='alterar_usuario.jsp?id="+ id +"'</script>");
-                        }
-                        
-                        break;
+                    ;break;
                 }
-                
             } catch (Exception e) {
                 out.print("Erro: " + e.getMessage());
             }

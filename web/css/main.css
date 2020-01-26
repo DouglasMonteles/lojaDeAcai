@@ -1,3 +1,17 @@
 .w5 {
     width: 40%
 }
+
+#side-menu-lateral {
+    display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    #menu-lateral {
+        display: none;
+    }
+    
+    #side-menu-lateral {
+        display: block;
+    }
+}

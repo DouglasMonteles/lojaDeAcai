@@ -23,3 +23,12 @@
     </div>
   </div>
 </footer>
+
+ <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="node_modules/materialize-css/dist/js/materialize.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+</script>

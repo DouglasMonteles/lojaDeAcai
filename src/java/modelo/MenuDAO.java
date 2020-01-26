@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.FileWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -59,11 +60,12 @@ public class MenuDAO extends DataBaseDAO{
      public int alterar(Menu m) throws Exception {
         int ret=0;
         this.conectar();
-        String sql = "UPDATE menu set nome=?, link=?, icone=?";
+        String sql = "UPDATE menu set nome=?, link=?, icone=? WHERE id=?";
         st = con.prepareStatement(sql);
         st.setString(1, m.getNome());
         st.setString(2, m.getLink());
         st.setString(3, m.getIcone());
+        st.setInt(4, m.getId());
         ret = st.executeUpdate();
         this.desconectar();
         return ret;

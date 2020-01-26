@@ -27,7 +27,7 @@ and open the template in the editor.
                 <div class="row z-depth-5 w5 grey darken-4" style="margin: 80px auto">
                     <div class="col s12" style="margin: 20px auto">
                         <div class="col s1"></div>
-                        <form class="col s10" method="post" action="gerenciar_usuario.do">
+                        <form class="col s10" method="post" action="gerenciar_login.do">
                             <input type="hidden" name="type" value="login">
                           <div class="row">
                             <div class="input-field col s12">

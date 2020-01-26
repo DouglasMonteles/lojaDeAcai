@@ -1,10 +1,11 @@
-<%@page import="modelo.MenuDAO"%>
+<%@page import="modelo.Cliente"%>
+<%@page import="modelo.ClienteDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%
-    ArrayList<Menu> listMenus = new ArrayList<Menu>();
-    MenuDAO meDAO = new MenuDAO();
+    ArrayList<Cliente> listClientes = new ArrayList<Cliente>();
+    ClienteDAO uDAO = new ClienteDAO();
     try {
-            listMenus = meDAO.listar();
+            listClientes = uDAO.listar();
     } catch (Exception e) {
         out.print("Erro: " + e);
     }
@@ -13,7 +14,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <title>Menus</title>
+        <title>Clientes</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--Import Google Icon Font-->
@@ -24,7 +25,7 @@
         <script> 
             function excluir(id, nome) {
                 if (window.confirm('Tem certeza que deseja excluir: ' + nome +  '?')) {
-                    location.href="gerenciar_menu.do?tipo=excluir&id=" + id;
+                    location.href="gerenciar_cliente.do?tipo=excluir&id=" + id;
                 }
             }
         </script>
@@ -45,9 +46,9 @@
 
               <div class="col s9">
                   <div class="row center-align card-panel grey darken-4 white-text">
-                      <h5 style="margin: 0 auto">Menu 
+                      <h5 style="margin: 0 auto">Clientes
                           <span class="right right-align">
-                              <a class="waves-effect waves-light btn modal-trigger purple" href="inserir_menu.jsp">
+                              <a class="waves-effect waves-light btn modal-trigger purple" href="inserir_cliente.jsp">
                                   <i class="small material-icons">add</i>
                               </a>
                           </span>
@@ -57,7 +58,7 @@
                     <thead class="black lighten-3 white-text">
                         <tr>
                           <th>Nome</th>
-                          <th>Link</th>
+                          <th>Tel. Contato</th>
                           <th class="center-align">Opções</th>
                       </tr>
                     </thead>
@@ -65,17 +66,20 @@
                     <tbody>
                       
                         <%
-                            for(Menu itens : listMenus) {
+                            for(Cliente itens : listClientes) {
                         %>
                             <tr>
                                 <td><%= itens.getNome() %></td>
-                                <td><%= itens.getLink() %></td>
+                                <td><%= itens.getTelContato()%></td>
                                 <td class="center-align">
-                                    <a class="modal-trigger waves-effect waves-light btn modal-trigger orange" href="alterar_menu.jsp?id=<%= itens.getId() %>">
+                                    <a class="modal-trigger waves-effect waves-light btn modal-trigger orange" href="alterar_cliente.jsp?id=<%= itens.getId() %>">
                                         <i class="small material-icons">create</i>
                                     </a>
                                     <a href="#" class="waves-effect waves-light btn modal-trigger red" onclick="excluir(<%= itens.getId() %>, '<%= itens.getNome() %>')">
                                         <i class="small material-icons">delete</i>
+                                    </a>
+                                        <a href="compra.jsp?id=<%= itens.getId() %>&op=n" class="waves-effect waves-light btn modal-trigger green">
+                                        <i class="small material-icons">local_dining</i>
                                     </a>
                                 </td>
                             </tr>

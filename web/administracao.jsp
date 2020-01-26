@@ -46,8 +46,9 @@
         <%@include file="includes/rodape.jsp" %>
         
         <script src="node_modules/materialize-css/dist/js/materialize.js" type="text/javascript"></script>
+        
         <script>
-                $(".button-collapse").sideNav();
+            $(".button-collapse").sideNav();
         </script>
     </body>
 </html>

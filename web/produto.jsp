@@ -1,10 +1,12 @@
-<%@page import="modelo.MenuDAO"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="modelo.ProdutoDAO"%>
+<%@page import="modelo.Produto"%>
 <%
-    ArrayList<Menu> listMenus = new ArrayList<Menu>();
-    MenuDAO meDAO = new MenuDAO();
+    ArrayList<Produto> listProd = new ArrayList<Produto>();
+    
     try {
-            listMenus = meDAO.listar();
+        ProdutoDAO pDAO = new ProdutoDAO();
+        listProd = pDAO.listar();
     } catch (Exception e) {
         out.print("Erro: " + e);
     }
@@ -13,7 +15,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <title>Menus</title>
+        <title>Produtos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--Import Google Icon Font-->
@@ -24,7 +26,7 @@
         <script> 
             function excluir(id, nome) {
                 if (window.confirm('Tem certeza que deseja excluir: ' + nome +  '?')) {
-                    location.href="gerenciar_menu.do?tipo=excluir&id=" + id;
+                    location.href="gerenciar_produto.do?tipo=excluir&id=" + id;
                 }
             }
         </script>
@@ -45,9 +47,9 @@
 
               <div class="col s9">
                   <div class="row center-align card-panel grey darken-4 white-text">
-                      <h5 style="margin: 0 auto">Menu 
+                      <h5 style="margin: 0 auto">Produto 
                           <span class="right right-align">
-                              <a class="waves-effect waves-light btn modal-trigger purple" href="inserir_menu.jsp">
+                              <a class="waves-effect waves-light btn modal-trigger purple" href="inserir_produto.jsp">
                                   <i class="small material-icons">add</i>
                               </a>
                           </span>
@@ -56,8 +58,9 @@
                 <table class="highlight z-depth-5 grey lighten-5 rounded">
                     <thead class="black lighten-3 white-text">
                         <tr>
+                          <th>Foto</th>
                           <th>Nome</th>
-                          <th>Link</th>
+                          <th>Descrição</th>
                           <th class="center-align">Opções</th>
                       </tr>
                     </thead>
@@ -65,13 +68,14 @@
                     <tbody>
                       
                         <%
-                            for(Menu itens : listMenus) {
+                            for(Produto itens : listProd) {
                         %>
                             <tr>
+                                <td><img width="80" height="50" src="<%= itens.getImgPath() %>"></td>
                                 <td><%= itens.getNome() %></td>
-                                <td><%= itens.getLink() %></td>
+                                <td><%= itens.getDescricao() %></td>
                                 <td class="center-align">
-                                    <a class="modal-trigger waves-effect waves-light btn modal-trigger orange" href="alterar_menu.jsp?id=<%= itens.getId() %>">
+                                    <a class="modal-trigger waves-effect waves-light btn modal-trigger orange" href="alterar_produto.jsp?id=<%= itens.getId() %>">
                                         <i class="small material-icons">create</i>
                                     </a>
                                     <a href="#" class="waves-effect waves-light btn modal-trigger red" onclick="excluir(<%= itens.getId() %>, '<%= itens.getNome() %>')">

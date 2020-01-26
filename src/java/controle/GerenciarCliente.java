@@ -6,11 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Perfil;
-import modelo.Usuario;
-import modelo.UsuarioDAO;
+import modelo.Cliente;
+import modelo.ClienteDAO;
 
-public class GerenciarUsuario extends HttpServlet {
+public class GerenciarCliente extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,63 +18,58 @@ public class GerenciarUsuario extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GerenciarUsuario</title>");            
+            out.println("<title>Servlet GerenciarCliente</title>");            
             out.println("</head>");
             out.println("<body>");
             
             try {
-                Usuario u = new Usuario();
-                Perfil p = new Perfil();
-                UsuarioDAO uDAO = new UsuarioDAO();
-                
-                String tipo = request.getParameter("tipo");
+   
                 int id = Integer.parseInt(request.getParameter("id"));
-                
-                if ("excluir".equals(tipo)) {
-                    if (uDAO.excluir(id) == 1) {
-                            out.print("<script>alert('Usuário excluido!'); location.href='usuario.jsp'</script>");
-                    } else {
-                        out.print("<script>alert('Erro ao  excluir usuário! Tente novamente'); location.href='alterar_usuario.jsp'</script>");
-                    }
-                }
-                
-                int id_perfil = Integer.parseInt(request.getParameter("id_perfil"));
+                String tipo = request.getParameter("tipo");
                 String nome = request.getParameter("nome");
-                String login = request.getParameter("login");
-                String senha = request.getParameter("senha");
+                String tel_contato = request.getParameter("tel_contato");
                 
-                u.setNome(nome);
-                u.setLogin(login);
-                u.setSenha(senha);
-                p.setId(id_perfil);
-                u.setPerfil(p);
+                Cliente c = new Cliente();
+                ClienteDAO cDAO = new ClienteDAO();
+                c.setNome(nome);
+                c.setTelContato(tel_contato);
                 
                 switch(tipo) {
                     case "inserir":
                         
-                        if (uDAO.inserir(u) == 1) {
-                            out.print("<script>alert('Usuário inserido!'); location.href='usuario.jsp'</script>");
+                        if (cDAO.inserir(c) == 1) {
+                            out.print("<script> alert('Cliente inserido!'); location.href='cliente.jsp' </script>");
                         } else {
-                            out.print("<script>alert('Erro ao  inserir usuário! Tente novamente'); location.href='inserir_usuario.jsp'</script>");
+                            out.print("<script> alert('Erro ao inserir cliente'); location.href='inserir_cliente.jsp' </script>");
                         }
                         
                         break;
-                    
-                    case "alterar":
-                        u.setId(id);
                         
-                        if (uDAO.alterar(u) == 1) {
-                            out.print("<script>alert('Usuário alterado!'); location.href='usuario.jsp'</script>");
+                    case "alterar":
+                        c.setId(id);
+                        
+                        if (cDAO.alterar(c) == 1) {
+                            out.print("<script> alert('Cliente alterado!'); location.href='cliente.jsp' </script>");
                         } else {
-                            out.print("<script>alert('Erro ao  alterar usuário! Tente novamente'); location.href='alterar_usuario.jsp?id="+ id +"'</script>");
+                            out.print("<script> alert('Erro ao alterar cliente'); location.href='alterar_cliente.jsp?id=" + id + "' </script>");
+                        }
+                        
+                        break;
+                        
+                    case "excluir":
+                        
+                        if (cDAO.excluir(id) == 1) {
+                            out.print("<script> alert('Cliente excluido!'); location.href='cliente.jsp' </script>");
+                        } else {
+                            out.print("<script> alert('Erro ao excluir cliente'); location.href='cliente.jsp</script>");
                         }
                         
                         break;
                 }
                 
             } catch (Exception e) {
-                out.print("Erro: " + e.getMessage());
-            }
+                out.print("Erro: " + e);
+            } 
             
             out.println("</body>");
             out.println("</html>");

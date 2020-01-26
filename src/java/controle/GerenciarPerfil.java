@@ -7,10 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Perfil;
-import modelo.Usuario;
-import modelo.UsuarioDAO;
+import modelo.PerfilDAO;
 
-public class GerenciarUsuario extends HttpServlet {
+public class GerenciarPerfil extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,60 +18,48 @@ public class GerenciarUsuario extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GerenciarUsuario</title>");            
+            out.println("<title>Servlet GerenciarPerfil</title>");            
             out.println("</head>");
             out.println("<body>");
-            
+            request.setCharacterEncoding("UTF-8");
             try {
-                Usuario u = new Usuario();
-                Perfil p = new Perfil();
-                UsuarioDAO uDAO = new UsuarioDAO();
-                
                 String tipo = request.getParameter("tipo");
+                String nome = request.getParameter("nome");
+                String desc = request.getParameter("descricao");
                 int id = Integer.parseInt(request.getParameter("id"));
                 
-                if ("excluir".equals(tipo)) {
-                    if (uDAO.excluir(id) == 1) {
-                            out.print("<script>alert('Usuário excluido!'); location.href='usuario.jsp'</script>");
-                    } else {
-                        out.print("<script>alert('Erro ao  excluir usuário! Tente novamente'); location.href='alterar_usuario.jsp'</script>");
-                    }
-                }
+                Perfil p = new Perfil();
+                PerfilDAO pDAO = new PerfilDAO();
                 
-                int id_perfil = Integer.parseInt(request.getParameter("id_perfil"));
-                String nome = request.getParameter("nome");
-                String login = request.getParameter("login");
-                String senha = request.getParameter("senha");
-                
-                u.setNome(nome);
-                u.setLogin(login);
-                u.setSenha(senha);
-                p.setId(id_perfil);
-                u.setPerfil(p);
+                p.setNome(nome);
+                p.setDescricao(desc);
                 
                 switch(tipo) {
                     case "inserir":
-                        
-                        if (uDAO.inserir(u) == 1) {
-                            out.print("<script>alert('Usuário inserido!'); location.href='usuario.jsp'</script>");
+                        if (pDAO.inserir(p) == 1) {
+                            out.print("<script>alert('Perfil Cadastrado!'); location.href='perfil.jsp'</script>");
                         } else {
-                            out.print("<script>alert('Erro ao  inserir usuário! Tente novamente'); location.href='inserir_usuario.jsp'</script>");
+                            out.print("<script>alert('Erro ao cadastrar perfil, Tente novamente!'); location.href='inserir_perfil.jsp'</script>");
                         }
-                        
-                        break;
-                    
-                    case "alterar":
-                        u.setId(id);
-                        
-                        if (uDAO.alterar(u) == 1) {
-                            out.print("<script>alert('Usuário alterado!'); location.href='usuario.jsp'</script>");
+                        ;break;
+                    case "alterar": 
+                        p.setId(id);
+                        if (pDAO.alterar(p) == 1) {
+                            out.print("<script>alert('Perfil Alterado!'); location.href='perfil.jsp'</script>");
                         } else {
-                            out.print("<script>alert('Erro ao  alterar usuário! Tente novamente'); location.href='alterar_usuario.jsp?id="+ id +"'</script>");
+                            out.print("<script>alert('Erro ao alterar perfil, Tente novamente!'); location.href='alterar_perfil.jsp?id=" + id + "'</script>");
                         }
-                        
-                        break;
+                        ;break;
+                    case "excluir":
+                        if (pDAO.excluir(id) == 1) {
+                            out.print("<script>alert('Perfil Excluido!'); location.href='perfil.jsp'</script>");
+                        } else {
+                            out.print("<script>alert('Erro ao excluir perfil, Tente novamente!'); location.href='perfil.jsp'</script>");
+                        }
+                        ;break;
+                    default:
+                         out.print("<script>alert('Ocorreu um erro insperado! Tente novamente'); location.href='perfil.jsp'</script>");
                 }
-                
             } catch (Exception e) {
                 out.print("Erro: " + e.getMessage());
             }
