@@ -3,6 +3,7 @@
 
 <%
     Usuario session_user = null;
+    
     if (session.getAttribute("user_session") == null) {
         response.sendRedirect("index.jsp");
     } else {

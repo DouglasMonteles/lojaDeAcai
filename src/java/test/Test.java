@@ -1,34 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package test;
 
+import java.util.ArrayList;
+import modelo.Cliente;
+import modelo.ClienteDAO;
+import modelo.ItemVenda;
 import modelo.Produto;
 import modelo.ProdutoDAO;
+import modelo.Usuario;
+import modelo.UsuarioDAO;
+import modelo.Venda;
+import modelo.VendaDAO;
 
-/**
- *
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class Test {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws Exception {
-        // TODO code application logic here
-        ProdutoDAO pDAO = new ProdutoDAO();
+        Cliente c = new Cliente();
+        c.setId(2);
+        ClienteDAO cDAO = new ClienteDAO();
+        
+        Usuario u = new Usuario();
+        u.setId(1);
+        UsuarioDAO uDAO = new UsuarioDAO();
+        
         Produto p = new Produto();
         p.setId(17);
-        p.setNome("teste no id 17 de novo");
-        p.setDescricao("desc");
-        p.setPreco(12.0);
-        p.setImgPath("img/teste");
-        System.out.println(pDAO.alterar(p));
+        ProdutoDAO pDAO = new ProdutoDAO();
+        
+        ItemVenda iv = new ItemVenda();
+        iv.setId(5);
+        iv.setProduto(p);
+        
+        Venda v = new Venda();
+        v.setCliente(c);
+        v.setVendedor(u);
+        ArrayList<ItemVenda> i = new ArrayList<ItemVenda>();
+        i.add(iv);
+        v.setCarrinho(i);
+        VendaDAO vDAO = new VendaDAO();
         
         
+        System.out.println(vDAO.registar(v));
     }
     
 }

@@ -28,4 +28,11 @@ public class Cliente {
     public void setTelContato(String telContato) {
         this.telContato = telContato;
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "id=" + id + ", nome=" + nome + ", telContato=" + telContato + '}';
+    }
+    
+    
 }

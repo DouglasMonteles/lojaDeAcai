@@ -32,6 +32,18 @@
         <servlet-name>GerenciarProduto</servlet-name>
         <servlet-class>controle.GerenciarProduto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarCarrinho</servlet-name>
+        <servlet-class>controle.GerenciarCarrinho</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FinalizarVenda</servlet-name>
+        <servlet-class>controle.FinalizarVenda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrarSistuacaoVenda</servlet-name>
+        <servlet-class>controle.RegistrarSistuacaoVenda</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarMenu</servlet-name>
         <url-pattern>/gerenciar_menu.do</url-pattern>
@@ -63,6 +75,18 @@
     <servlet-mapping>
         <servlet-name>GerenciarProduto</servlet-name>
         <url-pattern>/gerenciar_produto.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarCarrinho</servlet-name>
+        <url-pattern>/gerenciar_carrinho.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FinalizarVenda</servlet-name>
+        <url-pattern>/finalizar_venda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrarSistuacaoVenda</servlet-name>
+        <url-pattern>/registrar_situacao_venda.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
