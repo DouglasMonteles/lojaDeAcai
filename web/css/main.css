@@ -6,6 +6,10 @@
     display: none;
 }
 
+.alert-carrinho {
+    font-size: 14pt !important;
+}
+
 @media only screen and (max-width: 800px) {
     #menu-lateral {
         display: none;

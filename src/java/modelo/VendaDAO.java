@@ -60,12 +60,12 @@ public class VendaDAO extends DataBaseDAO {
         rs = st.executeQuery();
         if (rs.next()) {
             v.setId(rs.getInt("id"));
-            v.setDataVenda(rs.getDate("data_venda"));
-            v.setDataPagamento(rs.getDate("data_pagamento"));
+            v.setDataVenda(rs.getTimestamp("data_venda"));
+            v.setDataPagamento(rs.getTimestamp("data_pagamento"));
             ClienteDAO cDAO = new ClienteDAO();
             v.setCliente(cDAO.carregarPorId(rs.getInt("id_cliente")));
             UsuarioDAO uDAO = new UsuarioDAO();
-            v.setVendedor(uDAO.carregarPorId(rs.getInt("id_cliente")));
+            v.setVendedor(uDAO.carregarPorId(rs.getInt("id_usuario")));
         }
         this.desconectar();
         return v;

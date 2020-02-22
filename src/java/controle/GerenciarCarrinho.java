@@ -58,7 +58,7 @@ public class GerenciarCarrinho extends HttpServlet {
                         } else {
                             request.setAttribute("message", iv.getQtd() + " " + p.getNome() + "(s) foram adicionados!");
                         }
-                        request.getRequestDispatcher("compra.jsp?op=c").forward(request, response);
+                       request.getRequestDispatcher("compra.jsp?op=c").forward(request, response);
                         break;
                         
                     case "del":

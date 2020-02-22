@@ -124,7 +124,8 @@
                     if (request.getAttribute("message") != null) {
                 %>
                     M.toast({
-                        html: "<label>${message}</label>"  
+                        html: "<label>${message}</label>",
+                        classes: "white black-text"
                     });
                 <%   
                     }
