@@ -1,3 +1,17 @@
+<%@page import="modelo.TipoProdutoDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="modelo.TipoProduto"%>
+<%
+    ArrayList<TipoProduto> list = new ArrayList<TipoProduto>();
+    
+    try {
+        TipoProdutoDAO tpDAO = new TipoProdutoDAO();
+        list = tpDAO.listar();
+    } catch (Exception e) {
+        out.print("Erro: " + e);
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -28,16 +42,33 @@
                 </div>
             
             <div class="container">
-            <div class="row">
+            
                 <form class="col s12" action="gerenciar_produto.do" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="tipo" value="inserir">
                     <input type="hidden" name="id" value="0">
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s6">
                           <input id="nome" name="nome" type="text" class="validate white-text" required>
                           <label for="nome" class="">Nome</label>
                         </div>
-                    </div>
+                        
+                        <div class="input-field col s5">
+                            <select name="id_tipo">
+                                <option value="" disabled selected>Escolha</option>
+                                <%
+                                    for (TipoProduto tp : list) {
+                                %>
+                                <option value="<%= tp.getId() %>"><%= tp.getNome() %></option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                            <label>Tipo</label>
+                        </div>
+                            
+                        <div class="input-field col s1">
+                            <a href="#form_tp" class="btn waves-effect waves-light orange rounded modal-trigger">Outro</a>
+                        </div>
 
                       <div class="row">
                           <div class="input-field col s12">
@@ -70,31 +101,56 @@
                       </div>
                   </form>
               </div>
-            </div>
+            
             </div>
           </div>
         </main>
+                            
+        <!-- Modal Structure -->
+        <div id="form_tp" class="modal">
+          <div class="modal-content">
+            <h4 class="center-align">Cadastro de Novo Tipo de Produto</h4>
+            <div class="container center-block">
+                <div class="row">
+                    <form class="col s12" method="post" action="gerenciar_tipo_produto.do">
+                      <div class="row">
+                        <div class="input-field col s12">
+                            <input id="tp" name="tipo_prod" type="text" class="validate" required>
+                            <label for="tp">Tipo de Produto</label>
+                          </div>
+                      </div>
+                    <div class="row right-align">
+                        <button type="submit" class="right-align waves-effect btn">Cadastrar</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+          <div class="modal-footer">
+              <a href="#!" class="modal-close waves-effect btn-flat red">Fechar</a>
+          </div>
+        </div>
+    </div>
         
         <%@include file="includes/rodape.jsp" %>
         
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="node_modules/materialize-css/dist/js/materialize.js" type="text/javascript"></script>
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
-        <script src="js/jquery.min.js"></script>
         <script src="js/jquery.maskMoney.js"></script>
         
         <script>
-                $(function(){
-                    $("#preco").maskMoney({
-                        symbol: 'R$ ', 
-                        showSymbol: false, 
-                        thousands: '', 
-                        decimal: '.', 
-                        symbolStay: true
-                    });
+            $(document).ready(function(){
+                $('select').formSelect();
+                $('.modal').modal();
+              });
+              
+            $(function(){
+                $("#preco").maskMoney({
+                    symbol: 'R$ ', 
+                    showSymbol: false, 
+                    thousands: '', 
+                    decimal: '.', 
+                    symbolStay: true
                 });
+            });
         </script>
         
         <script>

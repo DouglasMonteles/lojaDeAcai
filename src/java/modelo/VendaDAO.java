@@ -13,7 +13,7 @@ public class VendaDAO extends DataBaseDAO {
     public ArrayList<Venda> listar() throws Exception {
         ArrayList<Venda> list = new ArrayList<Venda>();
         this.conectar();
-        String sql = "SELECT * FROM venda";
+        String sql = "SELECT * FROM venda ORDER BY id DESC";
         st = con.prepareStatement(sql);
         rs = st.executeQuery();
         while (rs.next()) {

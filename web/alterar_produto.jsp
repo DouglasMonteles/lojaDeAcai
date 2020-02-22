@@ -1,11 +1,19 @@
+<%@page import="modelo.TipoProdutoDAO"%>
+<%@page import="modelo.TipoProduto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="modelo.ProdutoDAO"%>
 <%@page import="modelo.Produto"%>
 <%
     Produto p = new Produto();
+    ArrayList<TipoProduto> list = new ArrayList<TipoProduto>();
+    
     try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            ProdutoDAO pDAO = new ProdutoDAO();
-            p = pDAO.carregarPorId(id);
+        int id = Integer.parseInt(request.getParameter("id"));
+        ProdutoDAO pDAO = new ProdutoDAO();
+        p = pDAO.carregarPorId(id);
+
+        TipoProdutoDAO tpDAO = new TipoProdutoDAO();
+        list = tpDAO.listar();
     } catch (Exception e) {
         out.print("Erro: " + e);
     }
@@ -46,9 +54,31 @@
                     <input type="hidden" name="tipo" value="alterar">
                     <input type="hidden" name="id" value="<%= p.getId() %>">
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s6">
                             <input id="nome" name="nome" type="text" value="<%= p.getNome() %>" class="validate white-text" required>
                           <label for="nome" class="">Nome</label>
+                        </div>
+                          
+                        <div class="input-field col s6">
+                            <select name="id_tipo">
+                                <option value="" disabled selected>Escolha</option>
+                                <%
+                                    String selected;
+                                    
+                                    for (TipoProduto tp : list) {
+                                    
+                                    if (p.getTipoProduto().getId() == tp.getId()) {
+                                        selected = "selected";
+                                    } else {
+                                        selected = "";
+                                    }
+                                %>
+                                <option <%= selected %> value="<%= tp.getId() %>"><%= tp.getNome() %></option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                            <label>Tipo</label>
                         </div>
                     </div>
 
@@ -93,31 +123,28 @@
             </div>
           </div>
         </main>
-        
+                            
         <%@include file="includes/rodape.jsp" %>
         
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="node_modules/materialize-css/dist/js/materialize.js" type="text/javascript"></script>
-        <script src="js/jquery.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
         <script src="js/jquery.maskMoney.js"></script>
         
         <script>
-                $(function(){
-                    $("#preco").maskMoney({
-                        symbol: 'R$ ', 
-                        showSymbol: false, 
-                        thousands: '', 
-                        decimal: '.', 
-                        symbolStay: true
-                    });
+            $(document).ready(function(){
+                $('select').formSelect();
+                $('.modal').modal();
+              });
+              
+            $(function(){
+                $("#preco").maskMoney({
+                    symbol: 'R$ ', 
+                    showSymbol: false, 
+                    thousands: '', 
+                    decimal: '.', 
+                    symbolStay: true
                 });
-                $(document).ready(function(){
-                    $('.materialboxed').materialbox();
-                });
-                
-                $(".button-collapse").sideNav();
-                
-                
+            });
         </script>
+        
     </body>
 </html>

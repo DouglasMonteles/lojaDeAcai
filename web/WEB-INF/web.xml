@@ -44,6 +44,10 @@
         <servlet-name>RegistrarSistuacaoVenda</servlet-name>
         <servlet-class>controle.RegistrarSistuacaoVenda</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarTipoProduto</servlet-name>
+        <servlet-class>controle.GerenciarTipoProduto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarMenu</servlet-name>
         <url-pattern>/gerenciar_menu.do</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>RegistrarSistuacaoVenda</servlet-name>
         <url-pattern>/registrar_situacao_venda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarTipoProduto</servlet-name>
+        <url-pattern>/gerenciar_tipo_produto.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

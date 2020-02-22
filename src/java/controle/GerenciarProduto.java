@@ -3,7 +3,6 @@ package controle;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DecimalFormat;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Produto;
 import modelo.ProdutoDAO;
+import modelo.TipoProduto;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -42,6 +42,7 @@ public class GerenciarProduto extends HttpServlet {
                         String desc = "";
                         double preco = 0.0;
                         String imgName = "";
+                        int id_tipo = 0;
                         
                         for (FileItem item : multiparts) {
                             if (!item.isFormField()) {
@@ -66,6 +67,9 @@ public class GerenciarProduto extends HttpServlet {
                                     case "img_name":
                                         imgName = item.getString();
                                         break;
+                                    case "id_tipo":
+                                        id_tipo = Integer.parseInt(item.getString());
+                                        break;
                                 }
                             }
                         }
@@ -74,6 +78,11 @@ public class GerenciarProduto extends HttpServlet {
                         p.setDescricao(desc);
                         p.setPreco(preco);
                         p.setImgPath("img/" + nome);
+                        
+                        TipoProduto tp = new TipoProduto();
+                        tp.setId(id_tipo);
+                        
+                        p.setTipoProduto(tp);
                         
                          switch(tipo) {
                             case "inserir":
@@ -90,7 +99,7 @@ public class GerenciarProduto extends HttpServlet {
                                 if (pDAO.alterar(p) == 1) {
                                     out.print("<script>alert('Produto alterado'); location.href='produto.jsp'</script>");
                                 } else {
-                                    out.print("<script>alert('Erro ao excluir alterar! Tente novamente'); location.href='alterar_produto.jsp?id="+ id +"'</script>");
+                                    out.print("<script>alert('Erro ao alterar produto! Tente novamente'); location.href='alterar_produto.jsp?id="+ id +"'</script>");
                                 }
 
                                 ;break;

@@ -5,13 +5,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class ProdutoDAO extends DataBaseDAO {
+    TipoProdutoDAO tpDAO = new TipoProdutoDAO();
     private PreparedStatement st;
     private ResultSet rs;
     
     public ArrayList<Produto> listar() throws Exception {
         ArrayList<Produto> list = new ArrayList<Produto>();
         this.conectar();
-        String sql = "SELECT * FROM produto";
+        String sql = "SELECT * FROM produto ORDER BY nome";
         st = con.prepareStatement(sql);
         rs = st.executeQuery();
         while (rs.next()) {
@@ -21,6 +22,7 @@ public class ProdutoDAO extends DataBaseDAO {
             p.setDescricao(rs.getString("descricao"));
             p.setImgPath(rs.getString("img_path"));
             p.setPreco(rs.getDouble("preco"));
+            p.setTipoProduto(tpDAO.carregarPorId(rs.getInt("tipo_produto_id")));
             list.add(p);
         }
         this.desconectar();
@@ -40,6 +42,7 @@ public class ProdutoDAO extends DataBaseDAO {
             p.setDescricao(rs.getString("descricao"));
             p.setImgPath(rs.getString("img_path"));
             p.setPreco(rs.getDouble("preco"));
+            p.setTipoProduto(tpDAO.carregarPorId(rs.getInt("tipo_produto_id")));
         }
         this.desconectar();
         return p;
@@ -48,12 +51,13 @@ public class ProdutoDAO extends DataBaseDAO {
     public int inserir(Produto p) throws Exception {
         int ret;
         this.conectar();
-        String sql = "INSERT INTO produto (nome, descricao, preco, img_path) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO produto (nome, descricao, preco, img_path, tipo_produto_id) VALUES (?, ?, ?, ?, ?)";
         st = con.prepareStatement(sql);
         st.setString(1, p.getNome());
         st.setString(2, p.getDescricao());
         st.setDouble(3, p.getPreco());
         st.setString(4, p.getImgPath());
+        st.setInt(5, p.getTipoProduto().getId());
         ret = st.executeUpdate();
         this.desconectar();
         return ret;
@@ -62,13 +66,14 @@ public class ProdutoDAO extends DataBaseDAO {
      public int alterar(Produto p) throws Exception {
         int ret;
         this.conectar();
-        String sql = "UPDATE produto SET nome=?, descricao=?, preco=?, img_path=? WHERE id=?";
+        String sql = "UPDATE produto SET nome=?, descricao=?, preco=?, img_path=?, tipo_produto_id=? WHERE id=?";
         st = con.prepareStatement(sql);
         st.setString(1, p.getNome());
         st.setString(2, p.getDescricao());
         st.setDouble(3, p.getPreco());
         st.setString(4, p.getImgPath());
-        st.setInt(5, p.getId());
+        st.setInt(5, p.getTipoProduto().getId());
+        st.setInt(6, p.getId());
         ret = st.executeUpdate();
         this.desconectar();
         return ret;

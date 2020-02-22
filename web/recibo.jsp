@@ -1,3 +1,5 @@
+<%@page import="java.util.GregorianCalendar"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.ItemVenda"%>
@@ -50,39 +52,46 @@
                         <li class="collection-item"><div>Data do Pagamento:<span class="secondary-content"><%=  sdf.format(v.getDataPagamento()) %></span></div></li>
                         <li class="collection-item"><div>Vendedor:<span class="secondary-content"><%=  v.getVendedor().getNome() %></span></div></li>
                         <li class="collection-item"><div>Cliente:<span class="secondary-content"><%=  v.getCliente().getNome() %></span></div></li>
+                        <li class="collection-item"><div>Localização:<span class="secondary-content">Quadra 604 conjunto 02 casa 15 - Recanto das Emas, Brasília - DF, 72640-402</span></div></li>
                         <li class="collection-header"><h4 class="center-align" style="font-size: 12pt">Produtos</h4></li>
+                        
+                        <table class="collection-item responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Preço Unit.</th>
+                                    <th>Qtd.</th>
+                                    <th>Total Individual</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <%
+                                    double total = 0.0;
+                                    double totPagar = 0.0;
+                                    
+                                    for (ItemVenda iv : list) {
+                                %>
+                                <tr>
+                                    <td><%= iv.getProduto().getNome() %></td>
+                                    <td><%= df.format(iv.getProduto().getPreco()) %></td>
+                                    <td><%= iv.getQtd() %></td>
+                                    <td><%= df.format(total = iv.getValor() * iv.getQtd()) %></td>
+                                </tr>
+                                <%
+                                        totPagar += total;
+                                    }
+                                %>
+                            </tbody>
+                        </table>
                         <li class="collection-item">
-                            <div class="white" style="columns: 4">
-                                <div>Nome</div>
-                                <div>Preço</div>
-                                <div>Qtd.</div>
-                                <div>Total</div>
-                            </div>
-                        </li>
-                        <%
-                            double total = 0.0;
-                            double totPagar = 0.0;
-                            for (ItemVenda iv : list) {
-                        %>
-                            <li class="collection-item">
-                                <div class="" style="columns: 4">
-                                    <div><%= iv.getProduto().getNome() %></div>
-                                    <div><%= df.format(iv.getProduto().getPreco()) %></div>
-                                    <div><%= iv.getQtd() %></div>
-                                    <div><%= df.format(total = iv.getValor() * iv.getQtd()) %></div>
-                                </div>
-                            </li>
-                        <%
-                                totPagar += total;
-                            }
-                        %>
-                        <li class="collection-item">
-                            <div class="right-align" style="font-weight: bold">Total pago: <%= df.format(totPagar) %></div>
+                            <div class="right-align" style="font-weight: bold; font-size: 16pt">Total a pagar: <%= df.format(totPagar) %></div>
                         </li>
                     </ul>
-                        <center><a href="#" onClick="javascript:history.back()" class="btn orange waves-effect waves-light">voltar</a></center>
-                 </div>
-               </div>
+               </div> 
+                        
+                <center><a href="#" style="margin-bottom: 10px" onClick="javascript:history.back()" class="btn orange waves-effect waves-light">voltar</a></center>
+            </div>
         </main>
         
         <%@include file="includes/rodape.jsp" %>

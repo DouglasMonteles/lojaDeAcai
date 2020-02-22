@@ -6,6 +6,7 @@ public class Produto {
     private String descricao;
     private double preco;
     private String imgPath;
+    private TipoProduto tipoProduto;
 
     public int getId() {
         return id;
@@ -45,5 +46,13 @@ public class Produto {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+    
+    public void setTipoProduto(TipoProduto tipoProduto) {
+        this.tipoProduto = tipoProduto;
+    }
+    
+    public TipoProduto getTipoProduto() {
+        return tipoProduto;
     }
 }
