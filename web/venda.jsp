@@ -48,7 +48,7 @@
                   <%@include file="includes/menu-lateral.jsp"%>
               </div>
 
-              <div class="col s9">
+              <div class="col s12 m9">
                   <div class="row center-align card-panel grey darken-4 white-text">
                       <h5 style="margin: 0 auto">Vendas</div>
                 <table class="highlight z-depth-5 grey lighten-5 rounded">

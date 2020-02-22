@@ -23,7 +23,7 @@
                   <%@include file="includes/menu-lateral.jsp"%>
               </div>
 
-              <div class="col s9">
+              <div class="col s12 m9">
                 <!-- Teal page content  -->
                   <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">

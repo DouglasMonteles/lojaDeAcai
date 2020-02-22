@@ -34,7 +34,7 @@
                   <%@include file="includes/menu-lateral.jsp"%>
               </div>
 
-            <div class="col s9 grey darken-4">
+            <div class="col s12 m9 grey darken-4">
                 <div class="row center-align card-panel grey darken-1white-text">
                       <h5 style="margin: 0 auto">Alterar Menu</h5>
                 </div>
