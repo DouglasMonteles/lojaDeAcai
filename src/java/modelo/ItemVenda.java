@@ -46,4 +46,9 @@ public class ItemVenda {
     public void setVenda(Venda venda) {
         this.venda = venda;
     }
+
+    @Override
+    public String toString() {
+        return "ItemVenda{" + "id=" + id + ", qtd=" + qtd + ", valor=" + valor + ", produto=" + produto + ", venda=" + venda + '}';
+    }
 }

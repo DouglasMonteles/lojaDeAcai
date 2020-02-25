@@ -31,6 +31,29 @@ public class VendaDAO extends DataBaseDAO {
         return list;
     }
     
+    public ArrayList<Venda> listarPorPaginação(int limit, int offset) throws Exception {
+        ArrayList<Venda> list = new ArrayList<Venda>();
+        this.conectar();
+        String sql = "SELECT * FROM venda WHERE DATE_FORMAT(data_venda, '%Y-%m-%d') = CURDATE() ORDER BY id DESC LIMIT ? OFFSET ?";
+        st = con.prepareStatement(sql);
+        st.setInt(1, limit);
+        st.setInt(2, offset);
+        rs = st.executeQuery();
+        while (rs.next()) {
+            Venda v = new Venda();
+            v.setId(rs.getInt("id"));
+            v.setDataVenda(rs.getTimestamp("data_venda"));
+            v.setDataPagamento(rs.getTimestamp("data_pagamento"));
+            ClienteDAO cDAO = new ClienteDAO();
+            v.setCliente(cDAO.carregarPorId(rs.getInt("id_cliente")));
+            UsuarioDAO uDAO = new UsuarioDAO();
+            v.setVendedor(uDAO.carregarPorId(rs.getInt("id_usuario")));
+            list.add(v);
+        }
+        this.desconectar();
+        return list;
+    }
+    
     public ArrayList<ItemVenda> listarCarrinho(int id) throws Exception {
         ArrayList<ItemVenda> itens = new ArrayList<ItemVenda>();
         this.conectar();
@@ -106,5 +129,17 @@ public class VendaDAO extends DataBaseDAO {
         ret = st.executeUpdate();
         this.desconectar();
         return ret;
+    }
+    
+    public float qtdVendas() throws Exception {
+        float qtd = 0;
+        this.conectar();
+        String sql = "SELECT COUNT(id) AS qtd FROM venda WHERE DATE_FORMAT(data_venda, '%Y-%m-%d') = CURDATE()";
+        st = con.prepareStatement(sql);
+        rs = st.executeQuery();
+        if (rs.next())
+            qtd = rs.getInt("qtd");
+        this.desconectar();
+        return qtd;
     }
 }

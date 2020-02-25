@@ -8,8 +8,22 @@
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/y à's' HH:mm:ss");
     ArrayList<Venda> listVendas = new ArrayList<Venda>();
     VendaDAO vDAO = new VendaDAO();
+    
+    int limit = 10;
+    int offset =  0;
+    double qtdVendas = 0;
+    String active;
+    
+    int pag = Integer.parseInt(request.getParameter("pag"));
+    
     try {
-            listVendas = vDAO.listar();
+        
+        if (pag != 1) {
+            offset = (pag * limit) - limit;
+        }
+        
+        listVendas = vDAO.listarPorPaginação(limit, offset);
+        qtdVendas = Math.ceil(vDAO.qtdVendas() / 10.0);
     } catch (Exception e) {
         out.print("Erro: " + e);
     }
@@ -25,15 +39,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="node_modules/materialize-css/dist/css/materialize.css" rel="stylesheet" type="text/css"/>
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
-        
-        <script> 
-            function excluir(id, nome) {
-                if (window.confirm('Tem certeza que deseja excluir: ' + nome +  '?')) {
-                    location.href="gerenciar_cliente.do?tipo=excluir&id=" + id;
-                }
-            }
-        </script>
-        
     </head>
     <body class="grey darken-2">
         
@@ -49,11 +54,12 @@
               </div>
 
               <div class="col s12 m9">
-                  <div class="row center-align card-panel grey darken-4 white-text">
+                <div class="row center-align card-panel grey darken-4 white-text">
                       <h5 style="margin: 0 auto">Vendas</div>
                 <table class="highlight z-depth-5 grey lighten-5 rounded">
                     <thead class="black lighten-3 white-text">
                         <tr>
+                          <th>ID</th>
                           <th>Data da Venda</th>
                           <th>Data do Pagamento</th>
                           <th>Vendedor</th>
@@ -68,6 +74,7 @@
                             for(Venda v : listVendas) {
                         %>
                             <tr>
+                                <td><%= v.getId() %></td>
                                 <td><%= sdf.format(v.getDataVenda()) %></td>
                                 <td>
                                     <% 
@@ -105,8 +112,20 @@
                       
                     </tbody>
                   </table>
+                <div class="row center-align">   
+                    <ul class="pagination">
+                        <%
+                            for (int i = 1; i <= qtdVendas; i++) {
+                            
+                            active = (i == pag) ? "active disabled" : "";
+                        %>
+                        <li class="waves-effect <%= active %>"><a class="black-text" href="venda.jsp?pag=<%= i %>"><%= i %></a></li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                </div>
               </div>
-
             </div>
         </main>
         

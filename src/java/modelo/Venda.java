@@ -58,4 +58,9 @@ public class Venda {
     public void setCarrinho(ArrayList<ItemVenda> carrinho) {
         this.carrinho = carrinho;
     }
+
+    @Override
+    public String toString() {
+        return "\n Venda{" + "id=" + id + ", dataVenda=" + dataVenda + ", dataPagamento=" + dataPagamento + ", vendedor=" + vendedor + ", cliente=" + cliente + ", carrinho=" + carrinho + '}';
+    }
 }

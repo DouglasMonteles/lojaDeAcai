@@ -31,9 +31,9 @@ public class FinalizarVenda extends HttpServlet {
                 VendaDAO vDAO = new VendaDAO();
        
                 if (vDAO.registar(v) == 1) {
-                    response.sendRedirect("venda.jsp");
+                    response.sendRedirect("venda.jsp?pag=1");
                 } else {
-                    response.sendRedirect("venda.jsp");
+                    response.sendRedirect("venda.jsp?pag=1");
                 }
             } catch (Exception e) {
                 out.print("Erro: " + e);

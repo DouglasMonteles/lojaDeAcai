@@ -32,7 +32,7 @@ public class RegistrarSistuacaoVenda extends HttpServlet {
                     request.setAttribute("status_venda", "Erro! Tente Novamente");
                 }
                 
-                request.getRequestDispatcher("venda.jsp").forward(request, response);
+                request.getRequestDispatcher("venda.jsp?pag=1").forward(request, response);
                 
             } catch (Exception e) {
                 out.print("Erro: " + e);
