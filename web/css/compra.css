@@ -1,0 +1,15 @@
+.w5 {
+    width: 40%
+}
+
+#side-menu-lateral {
+    display: block;
+}
+
+#menu-lateral {
+    display: none;
+}
+
+.alert-carrinho {
+    font-size: 14pt !important;
+}

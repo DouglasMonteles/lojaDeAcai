@@ -85,7 +85,7 @@
                             </tbody>
                         </table>
                         <li class="collection-item">
-                            <div class="right-align" style="font-weight: bold; font-size: 16pt">Total a pagar: <%= df.format(totPagar) %></div>
+                            <div class="right-align" style="font-weight: bold; font-size: 16pt">Total a pago: <%= df.format(totPagar) %></div>
                         </li>
                     </ul>
                </div> 

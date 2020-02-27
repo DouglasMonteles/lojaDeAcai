@@ -1,3 +1,5 @@
+<%@page import="modelo.TipoProdutoDAO"%>
+<%@page import="modelo.TipoProduto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="modelo.ItemVenda"%>
 <%@page import="modelo.Cliente"%>
@@ -8,6 +10,17 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.Produto"%>
 
+<%
+    ArrayList<TipoProduto> listTipo = new ArrayList<TipoProduto>();
+    
+    try {
+        TipoProdutoDAO tpDAO = new TipoProdutoDAO();
+        listTipo = tpDAO.listar();
+    } catch (Exception e) {
+        out.print("Error: " + e);
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -17,7 +30,7 @@
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="node_modules/materialize-css/dist/css/materialize.css" rel="stylesheet" type="text/css"/>
-        <link href="css/main.css" rel="stylesheet" type="text/css"/>
+        <link href="css/compra.css" rel="stylesheet" type="text/css"/>
       </head>
     <body class="grey darken-2">
         
@@ -35,12 +48,13 @@
               <%
                 Venda v = new Venda();
                 Cliente c = new Cliente();
+                
+                int id = (request.getParameter("id") != null) ? Integer.parseInt(request.getParameter("id")) : 0;
 
                 try {
                     String op = request.getParameter("op");
 
                     if ("n".equals(op)) {
-                        int id = Integer.parseInt(request.getParameter("id"));
                         ClienteDAO cDAO = new ClienteDAO();
                         c = cDAO.carregarPorId(id);
 
@@ -57,9 +71,9 @@
                 }
             %>
 
-              <div class="col s12 m9">
-                  <div class="row center-align card-panel grey darken-4 white-text">
-                      <h5 style="margin: 0 auto">Catálogo de Produtos
+              <div class="col s12 m12 l12">
+                  <div class="row center-align card-panel grey darken-4 white-text"> 
+                      <h5 style="margin: 0 auto">Catálogo de Produtos 
                         <span class="right right-align">
                             <a class="waves-effect waves-light btn modal-trigger purple" href="finalizar_venda.jsp">
                                 <i class="small material-icons">add_shopping_cart</i>
@@ -68,13 +82,42 @@
                     </h5>
                 </div>
                   
-                  <%  
+                  <div class="container">
+                      <div class="row white black-text center-block" style="border-radius: 20px">
+                          
+                          <div class="input-field col s8">
+                              <input type="text" value="" id="autocomplete-input" class="autocomplete">
+                                  <label for="autocomplete-input">Nome do produto</label>
+                                  <i class="material-icons prefix">search</i>
+                            </div>
+                          
+                          <div class="col s1"></div>
+                          
+                          <div class="input-field col s3">
+                              <select id="filtro" onchange="filtrar()">
+                                  <option value="" disabled selected>Filtro</option>
+                                  <option value="">Todos</option>
+                                  <%
+                                      for (TipoProduto tp : listTipo) {
+                                  %>
+                                  <option value="<%= tp.getNome() %>"><%= tp.getNome() %></option>
+                                  <%
+                                      }
+                                  %>
+                                </select>
+                          </div>
+                          
+                      </div>
+                  </div>
+                <%  
                     DecimalFormat df = new DecimalFormat("R$ #,##0.00");
                     ArrayList<Produto> listProd = new ArrayList<Produto>();
+                    
+                    String tipo = (request.getParameter("tipo") != null) ? request.getParameter("tipo") : ""; 
 
                     try {
                         ProdutoDAO pDAO = new ProdutoDAO();
-                        listProd = pDAO.listar();
+                        listProd = pDAO.listar(tipo);
                     } catch (Exception e) {
                         out.print("Erro: " + e);
                     }
@@ -84,15 +127,15 @@
                     <%
                         for (Produto p : listProd) {
                     %>
-                    <div class="col s12 m4" style="margin: 5px auto">
-                        <div class="card" style="height: 60%">
+                    <div class="col m4 s12 l3" style="margin: 1% auto">
+                        <div class="card" id="card-produto" style="height: 60%">
                             <div class="card-image">
                                 <img src="<%= p.getImgPath() %>" width="100" height="200">
                                     <form action="gerenciar_carrinho.do" method="post">
                                         <input type="hidden" name="id_produto" value="<%= p.getId() %>">
                                         <input type="hidden" name="opc" value="add">
                                         <div class="row">
-                                            <div class="input-field col m12">
+                                            <div class="input-field col m12 l12 s12">
                                                 <input id="qtd" name="qtd" type="number" min="1" value="1" class="center validate" required>
                                                 <label for="qtd" class="">Quantidade</label>
                                             </div>
@@ -114,24 +157,49 @@
               </div>
             </div>
         </main>
-        
+                
         <%@include file="includes/rodape.jsp" %>
 
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="node_modules/materialize-css/dist/js/materialize.js" type="text/javascript"></script>
-        <script>
+        
+        <script>            
+                 $(document).ready(function() {
+                    $('select').formSelect();
+                    $('input.autocomplete').autocomplete({
+                      data: {
+                          <%
+                              for (Produto p : listProd) {
+                          %>
+                            "<%= p.getNome() %>": null,  
+                        <%
+                            }
+                        %>
+                      },
+                      onAutocomplete: () => {
+                            let nome = document.getElementById("autocomplete-input").value;
+                            location.href = 'compra_search.jsp?id=<%= id %>&op=n&nome=' + nome;
+                        }
+                    });
+                  });
+            
                 <%
                     if (request.getAttribute("message") != null) {
                 %>
                     M.toast({
-                        html: "<label>${message}</label>",
-                        classes: "white black-text"
+                        html: "<label style='font-size: 12pt' class='white-text'>${message}</label>",
+                        classes: "green"
                     });
                 <%   
                     }
                     request.setAttribute("message", null);
                 %>
-                $(".button-collapse").sideNav();
+                
+                function filtrar() {
+                    let tipo = document.getElementById("filtro").value;
+                    location.href = 'compra.jsp?id=<%= id %>&op=n&tipo=' + tipo;
+                }
         </script>
+        
     </body>
 </html>

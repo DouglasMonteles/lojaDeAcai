@@ -55,4 +55,9 @@ public class Produto {
     public TipoProduto getTipoProduto() {
         return tipoProduto;
     }
+
+    @Override
+    public String toString() {
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imgPath=" + imgPath + ", tipoProduto=" + tipoProduto + '}';
+    }
 }

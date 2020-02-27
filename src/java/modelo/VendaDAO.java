@@ -31,7 +31,7 @@ public class VendaDAO extends DataBaseDAO {
         return list;
     }
     
-    public ArrayList<Venda> listarPorPaginação(int limit, int offset) throws Exception {
+    public ArrayList<Venda> listarPorPaginacao(int limit, int offset) throws Exception {
         ArrayList<Venda> list = new ArrayList<Venda>();
         this.conectar();
         String sql = "SELECT * FROM venda WHERE DATE_FORMAT(data_venda, '%Y-%m-%d') = CURDATE() ORDER BY id DESC LIMIT ? OFFSET ?";

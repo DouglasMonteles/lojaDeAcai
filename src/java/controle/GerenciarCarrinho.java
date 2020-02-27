@@ -53,12 +53,9 @@ public class GerenciarCarrinho extends HttpServlet {
                         
                         session.setAttribute("venda", v);
                         
-                        if (iv.getQtd() == 1) {
-                            request.setAttribute("message", iv.getQtd() + " " + p.getNome() + " foi adicionado!");
-                        } else {
-                            request.setAttribute("message", iv.getQtd() + " " + p.getNome() + "(s) foram adicionados!");
-                        }
-                       request.getRequestDispatcher("compra.jsp?op=c").forward(request, response);
+                        request.setAttribute("message", iv.getQtd() + " " + p.getNome() + " no carrinho!");
+                        
+                        request.getRequestDispatcher("compra.jsp?op=c").forward(request, response);
                         break;
                         
                     case "del":

@@ -97,7 +97,7 @@ public class GerenciarProduto extends HttpServlet {
                                 p.setId(id);
 
                                 if (pDAO.alterar(p) == 1) {
-                                    out.print("<script>alert('Produto alterado'); location.href='produto.jsp'</script>");
+                                    out.print("<script>alert('Produto alterado'); location.href='produto.jsp?pag=1'</script>");
                                 } else {
                                     out.print("<script>alert('Erro ao alterar produto! Tente novamente'); location.href='alterar_produto.jsp?id="+ id +"'</script>");
                                 }
@@ -113,9 +113,9 @@ public class GerenciarProduto extends HttpServlet {
 
                         if ("excluir".equals(tipo)) {
                             if (pDAO.excluir(id) == 1) {
-                                out.print("<script>alert('Produto excluido'); location.href='produto.jsp'</script>");
+                                out.print("<script>alert('Produto excluido'); location.href='produto.jsp?pag=1'</script>");
                             } else {
-                                out.print("<script>alert('Erro ao excluir produto! Tente novamente'); location.href='produto.jsp'</script>");
+                                out.print("<script>alert('Erro ao excluir produto! Tente novamente'); location.href='produto.jsp?pag=1'</script>");
                             } 
                         }
                     }

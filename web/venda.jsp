@@ -14,7 +14,7 @@
     double qtdVendas = 0;
     String active;
     
-    int pag = Integer.parseInt(request.getParameter("pag"));
+    int pag = (request.getParameter("pag") != null) ? Integer.parseInt(request.getParameter("pag")) : 1;
     
     try {
         
@@ -22,7 +22,7 @@
             offset = (pag * limit) - limit;
         }
         
-        listVendas = vDAO.listarPorPaginação(limit, offset);
+        listVendas = vDAO.listarPorPaginacao(limit, offset);
         qtdVendas = Math.ceil(vDAO.qtdVendas() / 10.0);
     } catch (Exception e) {
         out.print("Erro: " + e);

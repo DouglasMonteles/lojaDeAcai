@@ -1,13 +1,13 @@
 package teste.paginacao;
 
-import modelo.VendaDAO;
+import modelo.ProdutoDAO;
 
 public class TestePaginacao {
 
     public static void main(String[] args) throws Exception {
-        VendaDAO vDAO = new VendaDAO();
+        ProdutoDAO vDAO = new ProdutoDAO();
         
-        System.out.println(vDAO.listarPorPaginação(5, 6));
+        System.out.println(vDAO.listarPorPaginacao(2, 0));
     }
     
 }

@@ -9,11 +9,40 @@ public class ProdutoDAO extends DataBaseDAO {
     private PreparedStatement st;
     private ResultSet rs;
     
-    public ArrayList<Produto> listar() throws Exception {
+    public ArrayList<Produto> listar(String tipo) throws Exception {
+        String sql = "";
         ArrayList<Produto> list = new ArrayList<Produto>();
         this.conectar();
-        String sql = "SELECT * FROM produto ORDER BY nome";
+        if (tipo.equals("")) {
+            sql = "SELECT * FROM produto ORDER BY nome";
+            st = con.prepareStatement(sql);
+        } else {
+            sql = "SELECT * FROM produto AS p INNER JOIN tipo_produto AS tp ON p.tipo_produto_id = tp.id WHERE tp.nome = ?";
+            st = con.prepareStatement(sql);
+            st.setString(1, tipo);
+        }
+        rs = st.executeQuery();
+        while (rs.next()) {
+            Produto p = new Produto();
+            p.setId(rs.getInt("id"));
+            p.setNome(rs.getString("nome"));
+            p.setDescricao(rs.getString("descricao"));
+            p.setImgPath(rs.getString("img_path"));
+            p.setPreco(rs.getDouble("preco"));
+            p.setTipoProduto(tpDAO.carregarPorId(rs.getInt("tipo_produto_id")));
+            list.add(p);
+        }
+        this.desconectar();
+        return list;
+    }
+    
+    public ArrayList<Produto> listarPorPaginacao(int limit, int offset) throws Exception {
+        ArrayList<Produto> list = new ArrayList<Produto>();
+        this.conectar();
+        String sql = "SELECT * FROM produto ORDER BY nome LIMIT ? OFFSET ?";
         st = con.prepareStatement(sql);
+        st.setInt(1, limit);
+        st.setInt(2, offset);
         rs = st.executeQuery();
         while (rs.next()) {
             Produto p = new Produto();
@@ -35,6 +64,25 @@ public class ProdutoDAO extends DataBaseDAO {
         String sql = "SELECT * FROM produto WHERE id=?";
         st = con.prepareStatement(sql);
         st.setInt(1, id);
+        rs = st.executeQuery();
+        if (rs.next()) {
+            p.setId(rs.getInt("id"));
+            p.setNome(rs.getString("nome"));
+            p.setDescricao(rs.getString("descricao"));
+            p.setImgPath(rs.getString("img_path"));
+            p.setPreco(rs.getDouble("preco"));
+            p.setTipoProduto(tpDAO.carregarPorId(rs.getInt("tipo_produto_id")));
+        }
+        this.desconectar();
+        return p;
+    }
+    
+    public Produto carregarPorNome(String nome) throws Exception {
+        Produto p = new Produto();
+        this.conectar();
+        String sql = "SELECT * FROM produto WHERE nome=?";
+        st = con.prepareStatement(sql);
+        st.setString(1, nome);
         rs = st.executeQuery();
         if (rs.next()) {
             p.setId(rs.getInt("id"));
@@ -88,5 +136,18 @@ public class ProdutoDAO extends DataBaseDAO {
          ret = st.executeUpdate();
          this.desconectar();
          return ret;
+     }
+     
+     public double qtdProdutos() throws Exception {
+         int qtd = 0;
+         this.conectar();
+         String sql = "SELECT COUNT(id) AS qtd FROM produto";
+         st = con.prepareStatement(sql);
+         rs = st.executeQuery();
+         if (rs.next()) {
+             qtd = rs.getInt("qtd");
+         }
+         this.desconectar();
+         return qtd;
      }
 }

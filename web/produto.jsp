@@ -3,10 +3,22 @@
 <%@page import="modelo.Produto"%>
 <%
     ArrayList<Produto> listProd = new ArrayList<Produto>();
+    int pag = (request.getParameter("pag") != null) ? Integer.parseInt(request.getParameter("pag")) : 1;
+    
+    int limit = 20;
+    int offset = 0;
+    double qtdProd = 0;
+    String active;
     
     try {
+        
+        if (pag != 1) {
+            offset = (pag * limit) - limit;
+        }
+        
         ProdutoDAO pDAO = new ProdutoDAO();
-        listProd = pDAO.listar();
+        listProd = pDAO.listarPorPaginacao(limit, offset);
+        qtdProd = Math.ceil(pDAO.qtdProdutos() / limit);
     } catch (Exception e) {
         out.print("Erro: " + e);
     }
@@ -59,6 +71,7 @@
                     <thead class="black lighten-3 white-text">
                         <tr>
                           <th>Foto</th>
+                          <th>ID</th>
                           <th>Nome</th>
                           <th>Descrição</th>
                           <th class="center-align">Opções</th>
@@ -72,6 +85,7 @@
                         %>
                             <tr>
                                 <td><img width="80" height="50" src="<%= itens.getImgPath() %>"></td>
+                                <td><%= itens.getId() %></td>
                                 <td><%= itens.getNome() %></td>
                                 <td><%= itens.getDescricao() %></td>
                                 <td class="center-align">
@@ -89,6 +103,19 @@
                       
                     </tbody>
                   </table>
+                <div class="row center-align">   
+                    <ul class="pagination">
+                        <%
+                            for (int i = 1; i <= qtdProd; i++) {
+                            
+                            active = (i == pag) ? "active disabled" : "";
+                        %>
+                        <li class="waves-effect <%= active %>"><a class="black-text" href="produto.jsp?pag=<%= i %>"><%= i %></a></li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                </div>
               </div>
 
             </div>
