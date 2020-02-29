@@ -1,10 +1,10 @@
-<%@page import="modelo.Cliente"%>
-<%@page import="modelo.ClienteDAO"%>
+<%@page import="modelo.Comanda"%>
+<%@page import="modelo.ComandaDAO"%>
 <%
-    Cliente c = new Cliente();
+    Comanda c = new Comanda();
     try {
         int id = Integer.parseInt(request.getParameter("id"));
-        ClienteDAO cDAO = new ClienteDAO();
+        ComandaDAO cDAO = new ComandaDAO();
         c = cDAO.carregarPorId(id);
     } catch (Exception e) {
         out.print("Erro: " + e);
@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <title>Alterar Cliente</title>
+        <title>Alterar Comanda</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--Import Google Icon Font-->
@@ -37,30 +37,23 @@
 
             <div class="col s9 grey darken-4">
                 <div class="row center-align card-panel grey darken-1white-text">
-                      <h5 style="margin: 0 auto">Alterar Cliente</h5>
+                      <h5 style="margin: 0 auto">Alterar Comanda</h5>
                 </div>
             
             <div class="container">
             <div class="row">
-                <form class="col s12" action="gerenciar_cliente.do" method="post">
+                <form class="col s12" action="gerenciar_comanda.do" method="post">
                     <input type="hidden" name="tipo" value="alterar">
                     <input type="hidden" name="id" value="<%= c.getId() %>">
                     <div class="row">
                       <div class="input-field col s12">
-                        <input id="comanda" name="comanda" type="text" class="validate white-text" value="<%= c.getNome() %>" required>
-                        <label for="comanda" class="">Comanda</label>
+                        <input id="nome" name="comanda" type="text" class="validate white-text" value="<%= c.getNome() %>" required>
+                        <label for="nome" class="">Comanda</label>
                       </div>
                     </div>
 
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="tel" name="tel_contato" type="text" class="validate white-text" value="<%= c.getTelContato()%>">
-                            <label for="tel">Tel. Contato</label>
-                          </div>
-                    </div>
-
                       <div class="row right-align">
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Alterar Cliente
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Alterar Comanda
                               <i class="material-icons right">send</i>
                             </button>
                       </div>
