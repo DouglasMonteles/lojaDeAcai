@@ -80,6 +80,18 @@ public class ComandaDAO extends DataBaseDAO {
         return ret;
     }
     
+    public int status(Comanda c) throws Exception {
+        int ret;
+        this.conectar();
+        String sql = "UPDATE comanda SET status=? WHERE id=?";
+        st = con.prepareStatement(sql);
+        st.setString(1, c.getStatus());
+        st.setInt(2, c.getId());
+        ret = st.executeUpdate();
+        this.desconectar();
+        return ret;
+    }
+    
     public int excluir(int id) throws Exception {
         int ret;
         this.conectar();

@@ -52,6 +52,18 @@
         <servlet-name>GerenciarComanda</servlet-name>
         <servlet-class>controle.GerenciarComanda</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GerenciarCarrinhoComanda</servlet-name>
+        <servlet-class>controle.GerenciarCarrinhoComanda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FinalizarVendaComanda</servlet-name>
+        <servlet-class>controle.FinalizarVendaComanda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrarSituacaoVendaComanda</servlet-name>
+        <servlet-class>controle.RegistrarSituacaoVendaComanda</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarMenu</servlet-name>
         <url-pattern>/gerenciar_menu.do</url-pattern>
@@ -103,6 +115,18 @@
     <servlet-mapping>
         <servlet-name>GerenciarComanda</servlet-name>
         <url-pattern>/gerenciar_comanda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GerenciarCarrinhoComanda</servlet-name>
+        <url-pattern>/gerenciar_carrinho_comanda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FinalizarVendaComanda</servlet-name>
+        <url-pattern>/finalizar_venda_comanda.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrarSituacaoVendaComanda</servlet-name>
+        <url-pattern>/registrar_situacao_venda_comanda.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -6,10 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Comanda;
-import modelo.ComandaDAO;
+import modelo.VendaComandaDAO;
 
-public class GerenciarComanda extends HttpServlet {
+public class RegistrarSituacaoVendaComanda extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -18,48 +17,17 @@ public class GerenciarComanda extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GerenciarComanda</title>");            
+            out.println("<title>Servlet RegistrarSituacaoVendaComanda</title>");            
             out.println("</head>");
             out.println("<body>");
             
             try {
-                String tipo = request.getParameter("tipo");
-                int nome = (request.getParameter("comanda") != null) ? Integer.parseInt(request.getParameter("comanda")) : 0;
-                int id = (request.getParameter("id") != null) ? Integer.parseInt(request.getParameter("id")) : 0;
+                int id = Integer.parseInt(request.getParameter("id"));
                 
-                ComandaDAO cDAO = new ComandaDAO();
+                VendaComandaDAO vDAO = new VendaComandaDAO();
+                vDAO.registrarPagamento(id);
                 
-                Comanda verif = cDAO.carregarPorNome(nome);
-                
-                Comanda c = new Comanda();
-                
-                if (verif.getId() > 0 && verif.getStatus().equals("ativo")) {
-                    out.print("<script>alert('Comanda N° " + nome + " já cadastrada!'); location.href='comanda.jsp'</script>");
-                } else {
-                    c.setNome(nome);
-                    
-                    switch(tipo) {
-                        case "inserir":
-                            cDAO.inserir(c);
-                        break;
-
-                        case "alterar":
-                            c.setId(id);
-                            cDAO.alterar(c);
-                        break;
-                        
-                        case "status":
-                            c.setId(id);
-                            c.setStatus("Inativo");
-                            cDAO.status(c);
-                        break;
-
-                        case "excluir":
-                            cDAO.excluir(id);
-                        break;
-                    }
-                    response.sendRedirect("comanda.jsp");
-                }
+                response.sendRedirect("venda.jsp");
             } catch (Exception e) {
                 out.print("Erro: " + e);
             }

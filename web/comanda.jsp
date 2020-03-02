@@ -77,6 +77,7 @@
                         <tr>
                           <th>ID</th>
                           <th>Nome</th>
+                          <th class="center-align">Status</th>
                           <th class="center-align">Opções</th>
                       </tr>
                     </thead>
@@ -90,13 +91,26 @@
                                 <td><%= itens.getId() %></td>
                                 <td style="font-weight: bold; font-size: 14pt">Comanda N° <%= itens.getNome() %></td>
                                 <td class="center-align">
+                                    <%
+                                        if (itens.getStatus().equals("ativo")) {
+                                    %>
+                                    <a class="modal-trigger waves-effect waves-light btn modal-trigger red" href="registrar_situacao_venda_comanda.do?id=<%= itens.getId() %>">
+                                        Fechar Comanda
+                                    </a>
+                                    <%
+                                        } else {
+                                            out.print("<span class='pink-text' style='font-weight: bold'>Comanda Fechada</span>");
+                                        }
+                                    %>
+                                </td>
+                                <td class="center-align">
                                     <a class="modal-trigger waves-effect waves-light btn modal-trigger orange" href="alterar_comanda.jsp?id=<%= itens.getId() %>">
                                         <i class="small material-icons">create</i>
                                     </a>
                                     <a href="#" class="waves-effect waves-light btn modal-trigger red" onclick="excluir(<%= itens.getId() %>, '<%= itens.getNome() %>')">
                                         <i class="small material-icons">delete</i>
                                     </a>
-                                        <a href="compra.jsp?id=<%= itens.getId() %>&op=n" class="waves-effect waves-light btn modal-trigger green">
+                                        <a href="compra_comanda.jsp?id=<%= itens.getId() %>&op=n" class="waves-effect waves-light btn modal-trigger green">
                                         <i class="small material-icons">local_dining</i>
                                     </a>
                                 </td>

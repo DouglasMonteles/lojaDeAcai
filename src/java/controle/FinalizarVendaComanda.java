@@ -2,14 +2,17 @@ package controle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Comanda;
-import modelo.ComandaDAO;
+import javax.servlet.http.HttpSession;
+import modelo.ItemVendaComanda;
+import modelo.VendaComanda;
+import modelo.VendaComandaDAO;
 
-public class GerenciarComanda extends HttpServlet {
+public class FinalizarVendaComanda extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -18,47 +21,27 @@ public class GerenciarComanda extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GerenciarComanda</title>");            
+            out.println("<title>Servlet FinalizarVendaComanda</title>");            
             out.println("</head>");
             out.println("<body>");
             
+            request.setCharacterEncoding("UTF-8");
+            HttpSession session = request.getSession();
+            
             try {
-                String tipo = request.getParameter("tipo");
-                int nome = (request.getParameter("comanda") != null) ? Integer.parseInt(request.getParameter("comanda")) : 0;
-                int id = (request.getParameter("id") != null) ? Integer.parseInt(request.getParameter("id")) : 0;
+                int comanda = Integer.parseInt(request.getParameter("comanda"));
                 
-                ComandaDAO cDAO = new ComandaDAO();
+                ArrayList<ItemVendaComanda> list = new ArrayList<ItemVendaComanda>();
                 
-                Comanda verif = cDAO.carregarPorNome(nome);
-                
-                Comanda c = new Comanda();
-                
-                if (verif.getId() > 0 && verif.getStatus().equals("ativo")) {
-                    out.print("<script>alert('Comanda N° " + nome + " já cadastrada!'); location.href='comanda.jsp'</script>");
+                VendaComandaDAO vDAO = new VendaComandaDAO();
+                list = vDAO.listarCarrinho(comanda);
+                VendaComanda v = (VendaComanda) session.getAttribute("venda_comanda");
+                v.setCarrinho(list);
+       
+                if (vDAO.registar(v) == 1) {
+                    response.sendRedirect("venda.jsp?pag=1");
                 } else {
-                    c.setNome(nome);
-                    
-                    switch(tipo) {
-                        case "inserir":
-                            cDAO.inserir(c);
-                        break;
-
-                        case "alterar":
-                            c.setId(id);
-                            cDAO.alterar(c);
-                        break;
-                        
-                        case "status":
-                            c.setId(id);
-                            c.setStatus("Inativo");
-                            cDAO.status(c);
-                        break;
-
-                        case "excluir":
-                            cDAO.excluir(id);
-                        break;
-                    }
-                    response.sendRedirect("comanda.jsp");
+                    response.sendRedirect("venda.jsp?pag=1");
                 }
             } catch (Exception e) {
                 out.print("Erro: " + e);
